@@ -1,62 +1,84 @@
 # QuotaX
 
-macOS 菜单栏 AI 额度监控工具。像查看 CPU / 内存一样随时查看 AI 服务剩余额度。
+<p align="center">
+  <img src="assets/icon.png" width="128" alt="QuotaX Icon">
+</p>
 
-## 功能
+A macOS menu bar AI quota monitoring tool. Check your AI service remaining quotas at a glance, just like checking CPU / memory usage.
 
-- 菜单栏常驻，交替显示各服务商剩余百分比
-- 支持 OpenRouter、Codex (ChatGPT)、Amp
-- 自动检测本地配置（Codex auth.json、Amp CLI、环境变量）
-- 额度不足时发送系统通知
-- 可自定义刷新间隔和预警阈值
-- 密钥仅保存在本地，不会上传
+[中文文档](README_CN.md)
 
-## 支持的服务商
+## Features
 
-| 服务商 | 数据来源 | 配置方式 |
-|--------|---------|---------|
-| OpenRouter | API (`/api/v1/auth/key`) | 手动输入 API Key 或设置 `OPENROUTER_API_KEY` 环境变量 |
-| Codex | ChatGPT Backend API | 自动读取 `~/.codex/auth.json` |
-| Amp | `amp usage` 命令 | 自动检测本地 CLI |
+- **Menu bar resident** — Rotates through remaining percentages of each provider
+- **Multi-provider support** — OpenRouter, Codex (ChatGPT), Amp
+- **Auto-detect local config** — Codex `auth.json`, Amp CLI, environment variables
+- **System notifications** — Alerts when quota is running low
+- **Customizable** — Refresh interval and warning threshold
+- **Privacy-first** — API keys are stored locally only, never uploaded
 
-## 环境要求
+## Supported Providers
+
+| Provider | Data Source | Configuration |
+|----------|-------------|---------------|
+| OpenRouter | API (`/api/v1/auth/key`) | Manual API Key input or `OPENROUTER_API_KEY` env var |
+| Codex | ChatGPT Backend API | Auto-reads `~/.codex/auth.json` |
+| Amp | `amp usage` command | Auto-detects local CLI |
+
+## Download
+
+| Architecture | DMG | Description |
+|-------------|-----|-------------|
+| Universal (x86_64 + arm64) | `QuotaX-1.0.dmg` | Works on both Intel and Apple Silicon Macs |
+| Apple Silicon | `QuotaX-1.0-arm64.dmg` | arm64 only (smaller size) |
+| Intel | `QuotaX-1.0-x86_64.dmg` | x86_64 only (smaller size) |
+
+👉 [Download from Releases](https://github.com/tasselx/QuotaX/releases)
+
+## Requirements
 
 - macOS 14.0+
-- Xcode 15+
-- [XcodeGen](https://github.com/yonaskolb/XcodeGen)
+- Xcode 15+ (for building from source)
+- [XcodeGen](https://github.com/yonaskolb/XcodeGen) (for building from source)
 
-## 构建
+## Build
 
 ```bash
-# 安装 XcodeGen（如未安装）
+# Install XcodeGen (if not installed)
 brew install xcodegen
 
-# 生成 Xcode 项目并编译
+# Build Universal binary
 make build
 
-# 打包 DMG
+# Build and package Universal DMG
 make dmg
-# 产物位于 build/QuotaX.dmg
 
-# 清理
+# Build and package architecture-specific DMG
+make dmg-arm64    # Apple Silicon only
+make dmg-x86_64   # Intel only
+
+# Build all DMG variants
+make dmg-all
+
+# Clean build artifacts
 make clean
 ```
 
-## 项目结构
+## Project Structure
 
 ```
 QuotaX/
-├── Models/          # 数据模型（QuotaInfo, AppSettings）
-├── Providers/       # 服务商适配器（OpenRouter, Codex, Amp）
-├── Services/        # 基础服务（本地存储, 网络, 通知）
-├── ViewModels/      # 业务逻辑（QuotaViewModel）
-├── Views/           # UI 视图（Dashboard, Settings）
-├── QuotaXApp.swift  # 应用入口
+├── Models/          # Data models (QuotaInfo, AppSettings)
+├── Providers/       # Provider adapters (OpenRouter, Codex, Amp)
+├── Services/        # Core services (Keychain, Network, Notifications)
+├── ViewModels/      # Business logic (QuotaViewModel)
+├── Views/           # UI views (Dashboard, Settings)
+├── QuotaXApp.swift  # App entry point
 └── Info.plist
 ```
 
-## 安全
+## Security
 
-- 密钥存储在 `~/Library/Application Support/QuotaX/`，不使用云存储
-- 无账号体系，无数据上传，无用户追踪
-- 仅发送只读查询请求，不修改任何服务商数据
+- Keys stored in `~/Library/Application Support/QuotaX/`, no cloud storage
+- No account system, no data upload, no user tracking
+- Read-only queries only — never modifies provider data
