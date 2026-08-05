@@ -22,6 +22,7 @@ build: generate
 		-scheme $(SCHEME) \
 		-configuration $(CONFIG) \
 		-derivedDataPath $(BUILD_DIR) \
+		ONLY_ACTIVE_ARCH=NO \
 		build
 
 # 打包 DMG（含应用程序快捷方式）

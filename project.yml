@@ -16,6 +16,7 @@ targets:
       - sdk: IOKit.framework
     settings:
       base:
+        ARCHS: "x86_64 arm64"
         INFOPLIST_FILE: QuotaX/Info.plist
         CODE_SIGN_ENTITLEMENTS: QuotaX/QuotaX.entitlements
         PRODUCT_BUNDLE_IDENTIFIER: com.quotax.app
