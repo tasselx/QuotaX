@@ -12,7 +12,7 @@ macOS 菜单栏 AI 额度监控工具。像查看 CPU / 内存一样随时查看
 
 - 菜单栏常驻，交替显示各服务商剩余百分比
 - 支持 OpenRouter、Codex (ChatGPT)、Amp
-- 自动检测本地配置（Codex auth.json、Amp CLI、环境变量）
+- 自动检测本地配置（Codex auth.json 仅支持官方 ChatGPT 账号、Amp CLI、环境变量）
 - 额度不足时发送系统通知
 - 可自定义刷新间隔和预警阈值
 - 密钥仅保存在本地，不会上传
@@ -22,7 +22,7 @@ macOS 菜单栏 AI 额度监控工具。像查看 CPU / 内存一样随时查看
 | 服务商 | 数据来源 | 配置方式 |
 |--------|---------|---------|
 | OpenRouter | API (`/api/v1/auth/key`) | 手动输入 API Key 或设置 `OPENROUTER_API_KEY` 环境变量 |
-| Codex | ChatGPT Backend API | 自动读取 `~/.codex/auth.json` |
+| Codex | ChatGPT Backend API | 自动读取 `~/.codex/auth.json`（仅支持官方 ChatGPT 账号） |
 | Amp | `amp usage` 命令 | 自动检测本地 CLI |
 
 ## 下载

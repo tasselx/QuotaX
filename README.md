@@ -12,7 +12,7 @@ A macOS menu bar AI quota monitoring tool. Check your AI service remaining quota
 
 - **Menu bar resident** — Rotates through remaining percentages of each provider
 - **Multi-provider support** — OpenRouter, Codex (ChatGPT), Amp
-- **Auto-detect local config** — Codex `auth.json`, Amp CLI, environment variables
+- **Auto-detect local config** — Codex `auth.json` (official ChatGPT account only), Amp CLI, environment variables
 - **System notifications** — Alerts when quota is running low
 - **Customizable** — Refresh interval and warning threshold
 - **Privacy-first** — API keys are stored locally only, never uploaded
@@ -22,7 +22,7 @@ A macOS menu bar AI quota monitoring tool. Check your AI service remaining quota
 | Provider | Data Source | Configuration |
 |----------|-------------|---------------|
 | OpenRouter | API (`/api/v1/auth/key`) | Manual API Key input or `OPENROUTER_API_KEY` env var |
-| Codex | ChatGPT Backend API | Auto-reads `~/.codex/auth.json` |
+| Codex | ChatGPT Backend API | Auto-reads `~/.codex/auth.json` (official ChatGPT account only) |
 | Amp | `amp usage` command | Auto-detects local CLI |
 
 ## Download
