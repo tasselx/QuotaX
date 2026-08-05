@@ -1,0 +1,31 @@
+name: QuotaX
+
+options:
+  bundleIdPrefix: com.quotax
+  deploymentTarget:
+    macOS: "14.0"
+  createIntermediateGroups: true
+
+targets:
+  QuotaX:
+    type: application
+    platform: macOS
+    sources:
+      - QuotaX
+    dependencies:
+      - sdk: IOKit.framework
+    settings:
+      base:
+        INFOPLIST_FILE: QuotaX/Info.plist
+        CODE_SIGN_ENTITLEMENTS: QuotaX/QuotaX.entitlements
+        PRODUCT_BUNDLE_IDENTIFIER: com.quotax.app
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        COMBINE_HIDPI_IMAGES: true
+        SWIFT_VERSION: "5.0"
+        CODE_SIGN_IDENTITY: "-"
+        GENERATE_INFOPLIST_FILE: false
+      configs:
+        Debug:
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: DEBUG
+        Release:
+          SWIFT_OPTIMIZATION_LEVEL: "-O"
