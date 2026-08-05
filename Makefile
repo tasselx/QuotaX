@@ -31,12 +31,9 @@ dmg: build
 	@mkdir -p $(BUILD_DIR)/dmg
 	@cp -R "$(APP_PATH)" $(BUILD_DIR)/dmg/
 	@ln -s /Applications $(BUILD_DIR)/dmg/Applications
-	@hdiutil create \
-		-volname "$(DMG_VOLUME)" \
-		-srcfolder $(BUILD_DIR)/dmg \
-		-ov -format UDZO \
-		$(BUILD_DIR)/$(DMG_NAME)
-	@rm -rf $(BUILD_DIR)/dmg
+	@hdiutil makehybrid -o $(BUILD_DIR)/$(APP_NAME)-temp.iso $(BUILD_DIR)/dmg/ > /dev/null 2>&1
+	@hdiutil convert -format UDZO -ov -o $(BUILD_DIR)/$(DMG_NAME) $(BUILD_DIR)/$(APP_NAME)-temp.iso > /dev/null 2>&1
+	@rm -f $(BUILD_DIR)/$(APP_NAME)-temp.iso && rm -rf $(BUILD_DIR)/dmg
 	@echo "==> 完成: $(BUILD_DIR)/$(DMG_NAME)"
 
 clean:
