@@ -4,6 +4,14 @@
   <img src="assets/icon.png" width="128" alt="QuotaX 图标">
 </p>
 
+<p align="center">
+  <img src="https://img.shields.io/badge/Swift-5.0-F05138?logo=swift&logoColor=white" alt="Swift 5.0">
+  <img src="https://img.shields.io/badge/macOS-14.0+-000000?logo=apple&logoColor=white" alt="macOS 14.0+">
+  <img src="https://img.shields.io/github/v/release/tasselx/QuotaX?logo=github&sort=semver" alt="GitHub Release">
+  <img src="https://img.shields.io/github/downloads/tasselx/QuotaX/total?logo=github" alt="GitHub Downloads">
+  <img src="https://img.shields.io/github/stars/tasselx/QuotaX?logo=github" alt="GitHub Stars">
+</p>
+
 macOS 菜单栏 AI 额度监控工具。像查看 CPU / 内存一样随时查看 AI 服务剩余额度。
 
 [English](README.md)

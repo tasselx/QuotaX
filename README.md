@@ -4,6 +4,14 @@
   <img src="assets/icon.png" width="128" alt="QuotaX Icon">
 </p>
 
+<p align="center">
+  <img src="https://img.shields.io/badge/Swift-5.0-F05138?logo=swift&logoColor=white" alt="Swift 5.0">
+  <img src="https://img.shields.io/badge/macOS-14.0+-000000?logo=apple&logoColor=white" alt="macOS 14.0+">
+  <img src="https://img.shields.io/github/v/release/tasselx/QuotaX?logo=github&sort=semver" alt="GitHub Release">
+  <img src="https://img.shields.io/github/downloads/tasselx/QuotaX/total?logo=github" alt="GitHub Downloads">
+  <img src="https://img.shields.io/github/stars/tasselx/QuotaX?logo=github" alt="GitHub Stars">
+</p>
+
 A macOS menu bar AI quota monitoring tool. Check your AI service remaining quotas at a glance, just like checking CPU / memory usage.
 
 [中文文档](README_CN.md)
