@@ -89,11 +89,12 @@ final class CodexProvider: QuotaProvider {
         }
 
         let rateLimit = json["rate_limit"] as? [String: Any]
-        let primaryWindow = rateLimit?["primary_window"] as? [String: Any]
+        // 优先使用 secondary_window（周限额，7天），若无则降级使用 primary_window（5小时限额）
+        let window = (rateLimit?["secondary_window"] as? [String: Any]) ?? (rateLimit?["primary_window"] as? [String: Any])
 
-        let usedPercent = primaryWindow?["used_percent"] as? Double ?? 0
-        let resetAfterSeconds = primaryWindow?["reset_after_seconds"] as? Double
-        let resetAt = primaryWindow?["reset_at"] as? TimeInterval
+        let usedPercent = window?["used_percent"] as? Double ?? 0
+        let resetAfterSeconds = window?["reset_after_seconds"] as? Double
+        let resetAt = window?["reset_at"] as? TimeInterval
 
         let remainingPct = max(0, min(1, (100 - usedPercent) / 100.0))
 
