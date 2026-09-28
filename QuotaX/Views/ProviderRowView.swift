@@ -28,18 +28,20 @@ struct ProviderRowView: View {
             }
 
             if quota.error == nil {
-                // 进度条
-                GeometryReader { geo in
-                    ZStack(alignment: .leading) {
-                        RoundedRectangle(cornerRadius: 3)
-                            .fill(.quaternary)
-                            .frame(height: 6)
-                        RoundedRectangle(cornerRadius: 3)
-                            .fill(quota.status.color.gradient)
-                            .frame(width: geo.size.width * quota.remainingPercentage, height: 6)
+                if quota.hasKnownRemainingPercentage {
+                    // 进度条
+                    GeometryReader { geo in
+                        ZStack(alignment: .leading) {
+                            RoundedRectangle(cornerRadius: 3)
+                                .fill(.quaternary)
+                                .frame(height: 6)
+                            RoundedRectangle(cornerRadius: 3)
+                                .fill(quota.status.color.gradient)
+                                .frame(width: geo.size.width * quota.remainingPercentage, height: 6)
+                        }
                     }
+                    .frame(height: 6)
                 }
-                .frame(height: 6)
 
                 // 底行：用量 + 重置时间
                 HStack {

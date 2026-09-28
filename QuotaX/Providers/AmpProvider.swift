@@ -95,29 +95,57 @@ final class AmpProvider: QuotaProvider {
             }
         }
 
-        guard let pct = percentage else {
-            throw ProviderError.invalidResponse
+        if let pct = percentage {
+            return QuotaInfo(
+                id: UUID(),
+                providerType: .amp,
+                limit: 100,
+                used: 100 - pct,
+                remaining: pct,
+                remainingPercentage: pct / 100.0,
+                resetDate: dailyResetDate(isDaily: resetDaily),
+                lastUpdated: Date(),
+                unit: .percentage
+            )
         }
 
-        // 每日重置 → 今日剩余到午夜
-        var resetDate: Date?
-        if resetDaily {
-            let calendar = Calendar.current
-            if let tomorrow = calendar.date(byAdding: .day, value: 1, to: calendar.startOfDay(for: Date())) {
-                resetDate = tomorrow
-            }
+        // 新版输出使用美元余额，不再提供百分比
+        for line in lines {
+            guard let range = line.range(
+                of: #"\$[0-9]+(?:\.[0-9]+)?\s+remaining"#,
+                options: .regularExpression
+            ) else { continue }
+
+            let match = line[range]
+            guard let amountRange = match.range(
+                of: #"[0-9]+(?:\.[0-9]+)?"#,
+                options: .regularExpression
+            ), let remaining = Double(String(match[amountRange])) else { continue }
+
+            // Amp Free 默认每日额度为 $5.00，据此计算进度与已用额度
+            let limit = max(5.0, remaining)
+            let used = max(0, limit - remaining)
+            let pct = limit > 0 ? max(0.0, min(1.0, remaining / limit)) : 1.0
+
+            return QuotaInfo(
+                id: UUID(),
+                providerType: .amp,
+                limit: limit,
+                used: used,
+                remaining: remaining,
+                remainingPercentage: pct,
+                resetDate: dailyResetDate(isDaily: line.contains("resets daily")),
+                lastUpdated: Date(),
+                unit: .dollars
+            )
         }
 
-        return QuotaInfo(
-            id: UUID(),
-            providerType: .amp,
-            limit: 100,
-            used: 100 - pct,
-            remaining: pct,
-            remainingPercentage: pct / 100.0,
-            resetDate: resetDate,
-            lastUpdated: Date(),
-            unit: .percentage
-        )
+        throw ProviderError.invalidResponse
+    }
+
+    private func dailyResetDate(isDaily: Bool) -> Date? {
+        guard isDaily else { return nil }
+        let calendar = Calendar.current
+        return calendar.date(byAdding: .day, value: 1, to: calendar.startOfDay(for: Date()))
     }
 }

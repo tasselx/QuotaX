@@ -18,8 +18,7 @@ struct DashboardView: View {
             Divider()
             footer
         }
-        .frame(width: 320)
-        .frame(minHeight: 200, maxHeight: 480)
+        .frame(width: 320, height: 390)
     }
 
     // MARK: - 标题栏

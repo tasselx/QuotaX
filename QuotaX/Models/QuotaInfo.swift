@@ -57,8 +57,14 @@ struct QuotaInfo: Identifiable, Codable {
 
     var providerName: String { providerType.rawValue }
 
+    /// 是否有可用于进度条和百分比展示的总额度
+    var hasKnownRemainingPercentage: Bool {
+        unit == .percentage || limit != nil
+    }
+
     var status: QuotaStatus {
         guard error == nil else { return .unknown }
+        guard hasKnownRemainingPercentage else { return .unknown }
         if remainingPercentage > 0.5 { return .normal }
         if remainingPercentage > 0.2 { return .warning }
         return .danger
@@ -66,7 +72,10 @@ struct QuotaInfo: Identifiable, Codable {
 
     /// 格式化剩余百分比（菜单栏 / 卡片标题使用）
     var formattedRemaining: String {
-        "\(Int(remainingPercentage * 100))%"
+        if unit == .dollars, limit == nil, let remaining {
+            return String(format: "$%.2f", remaining)
+        }
+        return "\(Int(remainingPercentage * 100))%"
     }
 
     /// 格式化用量详情（卡片副标题使用）
@@ -74,6 +83,7 @@ struct QuotaInfo: Identifiable, Codable {
         switch unit {
         case .dollars:
             if let limit { return String(format: "$%.2f / $%.2f", used, limit) }
+            if let remaining { return String(format: "$%.2f remaining", remaining) }
             return String(format: "$%.2f used", used)
         case .requests, .credits:
             if let limit { return "\(Int(used)) / \(Int(limit))" }

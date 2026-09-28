@@ -47,10 +47,15 @@ final class QuotaViewModel: ObservableObject {
             return "QuotaX"
         case .percentage:
             guard let q = currentRotatedQuota else { return "-" }
-            return "\(Int(q.remainingPercentage * 100))%"
+            return q.hasKnownRemainingPercentage
+                ? "\(Int(q.remainingPercentage * 100))%"
+                : q.formattedRemaining
         case .providerPercentage:
             guard let q = currentRotatedQuota else { return "QuotaX" }
-            return "\(q.providerName) \(Int(q.remainingPercentage * 100))%"
+            let remaining = q.hasKnownRemainingPercentage
+                ? "\(Int(q.remainingPercentage * 100))%"
+                : q.formattedRemaining
+            return "\(q.providerName) \(remaining)"
         }
     }
 
