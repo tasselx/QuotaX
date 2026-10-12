@@ -48,16 +48,26 @@ struct ProviderRowView: View {
                         .frame(height: 6)
                     }
 
-                    // 底行：用量 + 重置时间
+                    // 底行：用量 + 重置次数 + 重置时间
                     HStack {
                         Text(quota.formattedUsage)
                             .font(.caption)
                             .foregroundStyle(.secondary)
+                        if let credits = quota.resetCredits {
+                            Text("·")
+                                .font(.caption)
+                                .foregroundStyle(.tertiary)
+                            Label("\(credits)次重置", systemImage: "arrow.clockwise.circle")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                                .help("可用额度重置次数: \(credits)")
+                        }
                         Spacer()
                         if let reset = quota.formattedResetDate {
                             Label(reset, systemImage: "clock")
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
+                                .fixedSize(horizontal: true, vertical: false)
                         }
                     }
                 }

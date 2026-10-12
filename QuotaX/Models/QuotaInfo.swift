@@ -99,6 +99,8 @@ struct QuotaInfo: Identifiable, Codable {
     var error: String?
     /// 多块用量明细；仅部分服务商提供（如 Droid），为空时卡片沿用单进度条样式。可选类型保证旧缓存仍能解码
     var details: [QuotaDetail]?
+    /// 可用额度重置次数（如 OpenAI Codex Reset Credits）；nil 表示不支持或未返回
+    var resetCredits: Int? = nil
 
     var providerName: String { providerType.rawValue }
 

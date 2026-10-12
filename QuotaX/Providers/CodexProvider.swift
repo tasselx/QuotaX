@@ -105,6 +105,16 @@ final class CodexProvider: QuotaProvider {
             resetDate = Date().addingTimeInterval(secs)
         }
 
+        let resetCreditsObj = json["rate_limit_reset_credits"] as? [String: Any]
+        let resetCredits: Int?
+        if let count = resetCreditsObj?["available_count"] as? Int {
+            resetCredits = count
+        } else if let countNum = resetCreditsObj?["available_count"] as? NSNumber {
+            resetCredits = countNum.intValue
+        } else {
+            resetCredits = nil
+        }
+
         return QuotaInfo(
             id: UUID(),
             providerType: .codex,
@@ -114,7 +124,8 @@ final class CodexProvider: QuotaProvider {
             remainingPercentage: remainingPct,
             resetDate: resetDate,
             lastUpdated: Date(),
-            unit: .percentage
+            unit: .percentage,
+            resetCredits: resetCredits
         )
     }
 }
