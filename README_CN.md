@@ -19,8 +19,10 @@ macOS 菜单栏 AI 额度监控工具。像查看 CPU / 内存一样随时查看
 ## 功能
 
 - 菜单栏常驻，交替显示各服务商剩余百分比
-- 支持 OpenRouter、Codex (ChatGPT)、Amp
-- 自动检测本地配置（Codex auth.json 仅支持官方 ChatGPT 账号、Amp CLI、环境变量）
+- 支持 OpenRouter、Codex (ChatGPT)、Amp、Droid、Cursor
+- 弹窗里的卡片可拖动排序，顺序会被记住，菜单栏轮播也按这个顺序
+- 每个已连接的服务商都可以单独隐藏 / 显示（设置里的开关，或在弹窗里右键卡片）：隐藏后弹窗、菜单栏轮播和额度预警都不再包含它，连接信息保留
+- 自动检测本地配置（Codex auth.json 仅支持官方 ChatGPT 账号、Amp CLI、Cursor 客户端登录态、环境变量）
 - 额度不足时发送系统通知
 - 可自定义刷新间隔和预警阈值
 - 密钥仅保存在本地，不会上传
@@ -32,6 +34,8 @@ macOS 菜单栏 AI 额度监控工具。像查看 CPU / 内存一样随时查看
 | OpenRouter | API (`/api/v1/auth/key`) | 手动输入 API Key 或设置 `OPENROUTER_API_KEY` 环境变量 |
 | Codex | ChatGPT Backend API | 自动读取 `~/.codex/auth.json`（仅支持官方 ChatGPT 账号） |
 | Amp | `amp usage` 命令 | 自动检测本地 CLI |
+| Droid | Factory API (`/api/billing/limits`) | 手动输入 API Key（`fk-...`）或设置 `FACTORY_API_KEY` 环境变量（仅支持 Token 限额计费账户） |
+| Cursor | Cursor 网页接口（`/api/usage`、`/api/usage-summary`） | 自动只读读取本机 Cursor 客户端的登录态，或手动粘贴 `WorkosCursorSessionToken` Cookie；兼容旧版按次数计费与新版按美元额度计费的套餐 |
 
 ## 下载
 
@@ -77,7 +81,7 @@ make clean
 ```
 QuotaX/
 ├── Models/          # 数据模型（QuotaInfo, AppSettings）
-├── Providers/       # 服务商适配器（OpenRouter, Codex, Amp）
+├── Providers/       # 服务商适配器（OpenRouter, Codex, Amp, Droid, Cursor）
 ├── Services/        # 基础服务（本地存储, 网络, 通知）
 ├── ViewModels/      # 业务逻辑（QuotaViewModel）
 ├── Views/           # UI 视图（Dashboard, Settings）

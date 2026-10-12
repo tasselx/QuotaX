@@ -169,6 +169,12 @@ private struct AddProviderPanel: View {
             return "输入 OpenAI API Key，用于查询 Codex 使用状态。"
         case .amp:
             return "Amp 自动从本地 CLI 读取，通常无需手动配置。"
+        case .droid:
+            // droid CLI 无额度命令，需用 Factory API Key 查询（也可设置 FACTORY_API_KEY 环境变量）
+            return "在 app.factory.ai/settings/api-keys 创建 API Key（fk- 开头），用于查询 Droid 额度。"
+        case .cursor:
+            // 只有读不到本机 Cursor 登录态时才会走到这里（已读到则显示「已连接 (自动)」），文案控制在 3 行内以免撑破 200pt 高的弹窗
+            return "登录 Cursor 客户端后会自动读取。读不到时：在浏览器登录 cursor.com，从开发者工具的 Cookie 里复制 WorkosCursorSessionToken 的值粘贴到下方。"
         }
     }
 
@@ -199,6 +205,9 @@ struct ProvidersSettingsTab: View {
             )
         case .amp:
             return true
+        case .cursor:
+            // 仅当本机 Cursor 客户端确实读到登录令牌才算自动；读不到时走手动粘贴 Cookie，需要保留「断开」入口
+            return CursorProvider.hasLocalSession
         default:
             return false
         }
@@ -220,6 +229,19 @@ struct ProvidersSettingsTab: View {
                             Button("断开") { try? viewModel.removeProvider(type: type) }
                                 .foregroundStyle(.red)
                         }
+                        // 显示 / 隐藏：关掉后弹窗卡片、菜单栏轮播、额度预警都不再包含它，连接信息保留，随时可重新打开
+                        // （自动检测的服务商没有「断开」，这个开关是把它们从界面里拿掉的唯一办法）
+                        // Form 里带标签的开关默认撑满整行（会把前面的 Spacer 挤没），带标签再 fixedSize 更会把整行撑爆（实测），
+                        // 所以隐藏标签、只留开关本体并固定大小；标签文字不画出来，用悬停提示和无障碍名称说明用途
+                        Toggle("显示", isOn: Binding(
+                            get: { !viewModel.hiddenProviders.contains(type) },
+                            set: { viewModel.setProvider(type, visible: $0) }
+                        ))
+                        .labelsHidden()
+                        .toggleStyle(.switch)
+                        .controlSize(.small)
+                        .fixedSize()
+                        .help("在弹窗和菜单栏中显示 \(type.rawValue)")
                     } else {
                         Button("连接") {
                             let settingsWindow = NSApp.windows.first { $0.title == "QuotaX 设置" }

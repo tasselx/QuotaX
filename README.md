@@ -19,8 +19,10 @@ A macOS menu bar AI quota monitoring tool. Check your AI service remaining quota
 ## Features
 
 - **Menu bar resident** — Rotates through remaining percentages of each provider
-- **Multi-provider support** — OpenRouter, Codex (ChatGPT), Amp
-- **Auto-detect local config** — Codex `auth.json` (official ChatGPT account only), Amp CLI, environment variables
+- **Multi-provider support** — OpenRouter, Codex (ChatGPT), Amp, Droid, Cursor
+- **Drag to reorder** — Drag the cards in the popover to arrange providers; the order is remembered and the menu bar rotation follows it
+- **Show / hide providers** — Turn a connected provider off in Settings (or right-click its card) to remove it from the popover, menu bar rotation and alerts without disconnecting it
+- **Auto-detect local config** — Codex `auth.json` (official ChatGPT account only), Amp CLI, Cursor app login, environment variables
 - **System notifications** — Alerts when quota is running low
 - **Customizable** — Refresh interval and warning threshold
 - **Privacy-first** — API keys are stored locally only, never uploaded
@@ -32,6 +34,8 @@ A macOS menu bar AI quota monitoring tool. Check your AI service remaining quota
 | OpenRouter | API (`/api/v1/auth/key`) | Manual API Key input or `OPENROUTER_API_KEY` env var |
 | Codex | ChatGPT Backend API | Auto-reads `~/.codex/auth.json` (official ChatGPT account only) |
 | Amp | `amp usage` command | Auto-detects local CLI |
+| Droid | Factory API (`/api/billing/limits`) | Manual API Key (`fk-...`) input or `FACTORY_API_KEY` env var (token-limit billing accounts only) |
+| Cursor | Cursor web API (`/api/usage`, `/api/usage-summary`) | Auto-reads the login of the local Cursor app (read-only), or paste the `WorkosCursorSessionToken` cookie manually. Supports both legacy request-count plans and usage-based (dollar) plans |
 
 ## Download
 
@@ -77,7 +81,7 @@ make clean
 ```
 QuotaX/
 ├── Models/          # Data models (QuotaInfo, AppSettings)
-├── Providers/       # Provider adapters (OpenRouter, Codex, Amp)
+├── Providers/       # Provider adapters (OpenRouter, Codex, Amp, Droid, Cursor)
 ├── Services/        # Core services (Keychain, Network, Notifications)
 ├── ViewModels/      # Business logic (QuotaViewModel)
 ├── Views/           # UI views (Dashboard, Settings)
